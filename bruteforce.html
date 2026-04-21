@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>0xKnowledge | 06 — Brute-Force</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">0xKNOWLEDGE</a>
+  <ul class="nav-links">
+    <li><a href="index.html">~/home</a></li>
+    <li><a href="cli.html">01_CLI</a></li>
+    <li><a href="ssh.html">02_SSH</a></li>
+    <li><a href="nmap.html">03_Nmap</a></li>
+    <li><a href="wireshark.html">04_Wireshark</a></li>
+    <li><a href="hydra.html">05_Hydra</a></li>
+    <li><a href="bruteforce.html">06_BruteForce</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <div class="content-wrap">
+    <div class="section-tag">// 06 — CONCEPT</div>
+    <h1 class="section-title">Brute-Force Attacks</h1>
+
+    <div class="intro-block">
+      Brute-force is an attack <em>method</em>, not a single tool. It describes the strategy of systematically trying every possible combination of credentials, characters, or keys until the correct one is found. It's the computational equivalent of trying every key on a keyring, one by one, until a door opens — except computers can try millions of keys per second.
+    </div>
+
+    <div class="card">
+      <h3>// What Is a Brute-Force Attack?</h3>
+      <p>A brute-force attack tries every possible combination within a defined character set — every letter, number, and symbol in every possible order and length. Given enough time and computing power, a brute-force attack against any password will eventually succeed. The limiting factor is time: an 8-character password using uppercase, lowercase, numbers, and symbols has over 200 trillion combinations. Even powerful hardware can take years. Brute-force is the most thorough method — and the slowest.</p>
+    </div>
+
+    <div class="card">
+      <h3>// Brute-Force vs. Dictionary Attack</h3>
+      <p><strong style="color:var(--green)">Brute-Force:</strong> Every possible combination, starting from "a", then "b", working through "zzzzzzzzz" and every combination in between. Guaranteed to eventually find any password — given unlimited time.</p>
+      <p style="margin-top:0.8rem"><strong style="color:var(--green)">Dictionary Attack:</strong> Uses a pre-built wordlist of known passwords, common words, leaked credentials, and predictable patterns instead of all possible combinations. It's a smarter, faster approach because most users choose passwords that already appear in wordlists — "password1", "qwerty", "iloveyou", "admin123". Hydra's use of rockyou.txt is a dictionary attack. In real engagements, dictionary attacks succeed far more often than pure brute-force because people are predictable.</p>
+    </div>
+
+    <div class="card">
+      <h3>// Penetration Test Scenario</h3>
+      <p>During an authorized test, a tester identifies an SSH service with no account lockout policy. They run Hydra with the rockyou.txt wordlist against the <code style="color:var(--green)">admin</code> account. Within four minutes, Hydra returns a valid credential. The tester logs in, confirms the access level, documents the finding, and includes it in the final report:</p>
+      <div class="code-block" data-label="PENTEST FINDING">
+<span class="comment">FINDING: Weak Credential + No Account Lockout</span>
+<span class="output">Severity:    CRITICAL
+Service:     SSH (Port 22)
+Host:        192.168.1.50
+Credential:  admin / password1
+Method:      Dictionary attack (rockyou.txt) — succeeded in 4 minutes
+Access:      Full shell access to production server</span>
+
+<span class="comment">RECOMMENDATIONS:</span>
+<span class="output">1. Immediately reset the 'admin' credential.
+2. Enforce minimum 12-character passphrase policy.
+3. Implement account lockout after 5 failed attempts.
+4. Enable MFA for all SSH and privileged access.
+5. Disable password authentication entirely — enforce SSH key pairs only.</span>
+      </div>
+    </div>
+
+    <div class="ethics-block">
+      <h3>⚠ ETHICS — THREE DEFENSES</h3>
+      <p><strong>1. Account Lockout:</strong> After a defined number of failed logins, the account is temporarily or permanently disabled. This turns a 4-minute dictionary attack into a years-long impossibility. Even locking for 30 seconds per failed attempt is enough to make automated attacks impractical.</p>
+      <p style="margin-top:0.6rem"><strong>2. Rate Limiting:</strong> Systems can detect abnormally high volumes of login requests and throttle or block the source IP. A human might make 5 attempts per minute. Hydra can make thousands. Rate limiting detects and kills that pattern automatically.</p>
+      <p style="margin-top:0.6rem"><strong>3. Multi-Factor Authentication (MFA):</strong> Even a perfectly cracked password becomes useless if the system requires a second factor — an authenticator app code, hardware key, or push notification. MFA doesn't stop a dictionary attack from guessing the password; it stops the attacker from actually using it.</p>
+    </div>
+
+    <!-- HYDRA COMMAND BUILDER BONUS -->
+    <div class="section-tag" style="margin-top:2.5rem">// BONUS — HYDRA COMMAND BUILDER</div>
+    <p style="margin-bottom:0.5rem;color:var(--text-dim);font-size:0.9rem">Configure options to generate and explain a Hydra command in real time.</p>
+    <div id="hydra-builder" class="builder-wrap"></div>
+  </div>
+
+  <footer>0xKNOWLEDGE &nbsp;|&nbsp; Ethical Hacking Reference</footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

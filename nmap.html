@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>0xKnowledge | 03 — Nmap</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">0xKNOWLEDGE</a>
+  <ul class="nav-links">
+    <li><a href="index.html">~/home</a></li>
+    <li><a href="cli.html">01_CLI</a></li>
+    <li><a href="ssh.html">02_SSH</a></li>
+    <li><a href="nmap.html">03_Nmap</a></li>
+    <li><a href="wireshark.html">04_Wireshark</a></li>
+    <li><a href="hydra.html">05_Hydra</a></li>
+    <li><a href="bruteforce.html">06_BruteForce</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <div class="content-wrap">
+    <div class="section-tag">// 03 — TOOL</div>
+    <h1 class="section-title">Nmap — Network Mapper</h1>
+
+    <div class="intro-block">
+      Nmap is an open-source tool for network discovery and security auditing. It sends carefully crafted packets to hosts on a network and analyzes the responses to determine which systems are online, which ports are open, and what services — and versions of those services — are running on each one.
+    </div>
+
+    <div class="card">
+      <h3>// What "Network Scanning" Actually Means</h3>
+      <p>Before you can attack or defend a network, you need to know what's on it. Network scanning is the process of systematically probing a range of IP addresses to map out which hosts are alive and what they're running. Nmap automates this — a scan that would take hours manually can be done in seconds. The output gives a security tester a picture of the attack surface: every machine, every open port, every service that could be targeted or defended.</p>
+    </div>
+
+    <div class="card">
+      <h3>// What Are Ports?</h3>
+      <p>A port is a numbered endpoint on a networked computer — think of it like a specific dock at a harbor where particular types of cargo arrive and depart. Port 22 handles SSH. Port 80 handles HTTP web traffic. Port 443 handles HTTPS. Port 3306 is MySQL databases. When a service is "running on a port," it's actively listening for connections on that number. To a security tester, an open port is a potential entry point. Knowing what's open — and exactly what version is running — is the starting point for almost every engagement.</p>
+    </div>
+
+    <div class="card">
+      <h3>// Real Nmap Command — With Explained Output</h3>
+      <div class="code-block" data-label="NMAP SCAN">
+<span class="comment"># Scan the entire subnet and detect service versions</span>
+nmap -sV 192.168.1.0/24
+
+<span class="flag">-sV</span>             <span class="comment">→ version detection: identify software running on each open port</span>
+<span class="flag">192.168.1.0/24</span>  <span class="comment">→ CIDR notation: scan all 254 hosts on this subnet</span>
+
+<span class="comment"># Sample output:</span>
+<span class="output">Nmap scan report for 192.168.1.100
+PORT     STATE  SERVICE  VERSION
+22/tcp   open   ssh      OpenSSH 7.9p1
+80/tcp   open   http     Apache httpd 2.4.38
+3306/tcp open   mysql    MySQL 5.7.36
+8080/tcp open   http-alt Werkzeug httpd 1.0.1</span>
+
+<span class="comment"># PORT 22 — SSH is open: remote access interface available.</span>
+<span class="comment"># PORT 3306 — MySQL exposed on the LAN: database directly reachable.</span>
+<span class="comment"># PORT 8080 — Werkzeug: a Python dev server, almost never hardened.</span>
+<span class="comment"># All three are findings worth documenting in a pentest report.</span>
+      </div>
+      <p>Version detection (<code style="color:var(--green)">-sV</code>) matters because knowing the exact version of a service lets a tester cross-reference it against known CVEs (Common Vulnerabilities and Exposures). An outdated version of OpenSSH might have a known exploit. An unpatched MySQL might have a privilege escalation path. The version number turns an open port into a specific, actionable finding.</p>
+    </div>
+
+    <!-- NMAP COMMAND BUILDER BONUS -->
+    <div class="section-tag" style="margin-top:2.5rem">// BONUS — NMAP COMMAND BUILDER</div>
+    <p style="margin-bottom:0.5rem;color:var(--text-dim);font-size:0.9rem">Select scan options below to generate and explain an Nmap command in real time.</p>
+    <div id="nmap-builder" class="builder-wrap"></div>
+  </div>
+
+  <footer>0xKNOWLEDGE &nbsp;|&nbsp; Ethical Hacking Reference</footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

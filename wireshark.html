@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>0xKnowledge | 04 — Wireshark</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">0xKNOWLEDGE</a>
+  <ul class="nav-links">
+    <li><a href="index.html">~/home</a></li>
+    <li><a href="cli.html">01_CLI</a></li>
+    <li><a href="ssh.html">02_SSH</a></li>
+    <li><a href="nmap.html">03_Nmap</a></li>
+    <li><a href="wireshark.html">04_Wireshark</a></li>
+    <li><a href="hydra.html">05_Hydra</a></li>
+    <li><a href="bruteforce.html">06_BruteForce</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <div class="content-wrap">
+    <div class="section-tag">// 04 — TOOL</div>
+    <h1 class="section-title">Wireshark — Packet Analyzer</h1>
+
+    <div class="intro-block">
+      Wireshark is a free, open-source network protocol analyzer that captures and lets you inspect every packet traveling across a network interface in real time. It's one of the most widely used tools in both security research and network troubleshooting, trusted by professionals worldwide.
+    </div>
+
+    <div class="card">
+      <h3>// What Is a Packet?</h3>
+      <p>Think of a packet like a physical letter traveling through the postal system. The envelope has a "from" address (source IP) and a "to" address (destination IP), and inside the envelope is the actual content — the payload. Network communication works the same way: data is broken into small chunks called packets, each with header information describing where it came from and where it's going, plus the actual data being sent. Wireshark lets you open every envelope and read every letter passing through your network interface — in real time, as they travel.</p>
+    </div>
+
+    <div class="card">
+      <h3>// What Wireshark Reveals</h3>
+      <p>Wireshark captures traffic as a GUI application — you see a live feed of packets with protocol, source, destination, and payload data. During a security test, Wireshark can expose: unencrypted credentials in HTTP login forms, DNS queries that reveal internal hostnames and network structure, ARP traffic mapping physical MAC addresses to IP addresses, and any data transmitted without encryption. The core insight is simple: anything unencrypted is readable by anyone watching the wire.</p>
+    </div>
+
+    <div class="card">
+      <h3>// Real-World Example: HTTP Login Capture</h3>
+      <p>Imagine a user on the same network submits a login form to a site running plain HTTP instead of HTTPS. Wireshark captures the full TCP conversation — including the raw POST request body. Below is what that exchange looks like in a packet capture:</p>
+
+      <table class="packet-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Source</th>
+            <th>Destination</th>
+            <th>Protocol</th>
+            <th>Info</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>192.168.1.55</td>
+            <td>203.0.113.10</td>
+            <td>TCP</td>
+            <td>SYN → port 80</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>203.0.113.10</td>
+            <td>192.168.1.55</td>
+            <td>TCP</td>
+            <td>SYN-ACK</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>192.168.1.55</td>
+            <td>203.0.113.10</td>
+            <td>HTTP</td>
+            <td>POST /login.php HTTP/1.1</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td colspan="4" class="sensitive">↳ Payload: username=admin&amp;password=hunter2 &nbsp;[PLAIN TEXT — FULLY VISIBLE]</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>203.0.113.10</td>
+            <td>192.168.1.55</td>
+            <td>HTTP</td>
+            <td>HTTP/1.1 302 Found → /dashboard</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p style="margin-top:1rem">In a real penetration test, this would be documented as a critical finding: <em>"Credentials transmitted over unencrypted HTTP. Intercepted via passive network capture with no active attack required. Remediation: enforce HTTPS site-wide using TLS 1.2 or higher. Implement HSTS headers."</em></p>
+    </div>
+
+    <div class="ethics-block">
+      <h3>⚠ LEGAL BOUNDARY</h3>
+      <p>Capturing network traffic you don't own or don't have authorization to monitor is illegal under the Electronic Communications Privacy Act (ECPA). Wireshark is a legitimate diagnostic and security tool — on networks where you have explicit permission. Passive sniffing on a network without written consent is federal wire-tapping, regardless of whether you intended to do anything with the data.</p>
+    </div>
+  </div>
+
+  <footer>0xKNOWLEDGE &nbsp;|&nbsp; Ethical Hacking Reference</footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>0xKnowledge | 05 — Hydra</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">0xKNOWLEDGE</a>
+  <ul class="nav-links">
+    <li><a href="index.html">~/home</a></li>
+    <li><a href="cli.html">01_CLI</a></li>
+    <li><a href="ssh.html">02_SSH</a></li>
+    <li><a href="nmap.html">03_Nmap</a></li>
+    <li><a href="wireshark.html">04_Wireshark</a></li>
+    <li><a href="hydra.html">05_Hydra</a></li>
+    <li><a href="bruteforce.html">06_BruteForce</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <div class="content-wrap">
+    <div class="section-tag">// 05 — TOOL</div>
+    <h1 class="section-title">Hydra — Credential Testing Tool</h1>
+
+    <div class="intro-block">
+      THC-Hydra is a fast, parallelized login-cracking tool used by authorized security testers to verify whether systems accept weak or commonly used passwords. It automates the process of submitting credential combinations against login interfaces — including SSH, FTP, HTTP forms, and many others — at a speed no human could match manually.
+    </div>
+
+    <div class="card">
+      <h3>// What Hydra Does and Why Testers Use It</h3>
+      <p>When an organization asks a pentester to assess their authentication systems, one critical question is: "Do any accounts use weak or default passwords?" Manually trying thousands of passwords isn't feasible. Hydra automates this by taking a list of passwords and rapidly submitting them against a login service. If any password in the list succeeds, Hydra reports it. A security tester then documents the finding and submits a report so the organization can reset the credential and strengthen their password policy before a real attacker finds the same weakness.</p>
+    </div>
+
+    <div class="card">
+      <h3>// What Is a Wordlist?</h3>
+      <p>A wordlist is a text file containing one password per line — compiled from data breaches, research into common password patterns, keyboard walks, and predictable substitutions. The most well-known wordlist is <code style="color:var(--green)">rockyou.txt</code>, containing over 14 million real passwords leaked in a 2009 data breach. Hydra reads through the wordlist sequentially, submitting each entry against the target service until one succeeds or the list is exhausted. The reason wordlists work is a simple truth: most people use predictable passwords.</p>
+    </div>
+
+    <div class="card">
+      <h3>// Lab Command — Full Flag Breakdown</h3>
+      <div class="code-block" data-label="HYDRA">
+<span class="comment"># Authorized credential test against SSH on 192.168.1.50</span>
+hydra -l admin -P /usr/share/wordlists/rockyou.txt ssh://192.168.1.50
+
+<span class="flag">hydra</span>                            <span class="comment">→ the program being called</span>
+<span class="flag">-l admin</span>                         <span class="comment">→ lowercase -l: one specific username to test</span>
+<span class="flag">-P /usr/share/wordlists/rockyou.txt</span> <span class="comment">→ uppercase -P: path to the password wordlist</span>
+<span class="flag">ssh://</span>                           <span class="comment">→ the protocol to attack (Hydra supports dozens)</span>
+<span class="flag">192.168.1.50</span>                     <span class="comment">→ the IP address of the target SSH service</span>
+
+<span class="comment"># Output when a match is found:</span>
+<span class="found">[22][ssh] host: 192.168.1.50   login: admin   password: password1</span>
+
+<span class="comment"># Finding: 'admin' account uses the password 'password1'.</span>
+<span class="comment"># Action: Document it. Report it. Recommend forced reset + MFA.</span>
+      </div>
+    </div>
+
+    <div class="ethics-block">
+      <h3>⚠ ETHICS — REQUIRED READING</h3>
+      <p><strong>Running Hydra against any system without written authorization is illegal.</strong> It doesn't matter if the system appears abandoned, misconfigured, or obviously vulnerable. Unauthorized credential testing violates the Computer Fraud and Abuse Act (CFAA) — a federal statute with penalties including years in federal prison and significant fines. The signed authorization document is what separates a security professional from a criminal using the exact same tool with the exact same commands.</p>
+      <p style="margin-top:0.6rem">This distinction is not a technicality. It is the entire foundation of the profession.</p>
+    </div>
+
+    <div class="defense-block">
+      <h3>// DEFENSES AGAINST CREDENTIAL ATTACKS</h3>
+      <ul>
+        <li><strong>Account Lockout Policies:</strong> Automatically lock an account after a set number of failed attempts (e.g., 5). This forces an attacker to dramatically slow down or give up entirely — Hydra's speed advantage disappears when every 5th attempt locks the target account.</li>
+        <li><strong>Rate Limiting:</strong> Limit how many login attempts can come from a single IP address per minute. Hydra's strength is volume — rate limiting removes that strength.</li>
+        <li><strong>Multi-Factor Authentication (MFA):</strong> Even if Hydra finds the correct password, MFA means the attacker still can't log in without a second factor — a phone code, hardware token, or biometric. This is the single most impactful defense against credential attacks.</li>
+      </ul>
+    </div>
+  </div>
+
+  <footer>0xKNOWLEDGE &nbsp;|&nbsp; Ethical Hacking Reference</footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

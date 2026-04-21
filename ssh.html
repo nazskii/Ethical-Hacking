@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>0xKnowledge | 02 — SSH</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">0xKNOWLEDGE</a>
+  <ul class="nav-links">
+    <li><a href="index.html">~/home</a></li>
+    <li><a href="cli.html">01_CLI</a></li>
+    <li><a href="ssh.html">02_SSH</a></li>
+    <li><a href="nmap.html">03_Nmap</a></li>
+    <li><a href="wireshark.html">04_Wireshark</a></li>
+    <li><a href="hydra.html">05_Hydra</a></li>
+    <li><a href="bruteforce.html">06_BruteForce</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <div class="content-wrap">
+    <div class="section-tag">// 02 — TOOL</div>
+    <h1 class="section-title">SSH — Secure Shell</h1>
+
+    <div class="intro-block">
+      SSH (Secure Shell) is a cryptographic network protocol that lets you operate a remote computer's command line over an encrypted connection — as if you were sitting in front of it. Before SSH, tools like Telnet sent all traffic, including passwords, in plain text. Anyone with a packet sniffer could read it. SSH eliminated that problem entirely.
+    </div>
+
+    <div class="card">
+      <h3>// The Problem SSH Solved</h3>
+      <p>In the early days of networking, administrators used Telnet to remotely manage systems. Telnet worked, but it had a fatal flaw: it transmitted everything — commands, responses, and credentials — as unencrypted plain text. SSH replaced it with an encrypted tunnel using public-key cryptography, making any intercepted traffic useless. An attacker might capture the packets, but what they'd see is cipher gibberish with no way to decode it.</p>
+    </div>
+
+    <div class="card">
+      <h3>// What You Can Do Over SSH</h3>
+      <p>Once connected, you have full shell access to the remote machine. In a penetration testing context this means: running reconnaissance commands, reading files and logs, checking for privilege escalation paths, installing or removing software, pivoting to other machines on the internal network, and executing anything you'd do if you were physically present — quietly and from anywhere in the world.</p>
+    </div>
+
+    <div class="card">
+      <h3>// Command Breakdown — Lab Example</h3>
+      <div class="code-block" data-label="TERMINAL">
+<span class="comment"># Connect to the Raspberry Pi discovered during the Nmap lab</span>
+ssh student@192.168.1.100
+
+<span class="comment"># Breaking down each part:</span>
+<span class="flag">ssh</span>            <span class="comment">→ the SSH client program being called</span>
+<span class="flag">student</span>        <span class="comment">→ the username to log in as on the remote machine</span>
+<span class="flag">@</span>              <span class="comment">→ separator between username and host address</span>
+<span class="flag">192.168.1.100</span>  <span class="comment">→ the IP address of the target (found via Nmap)</span>
+
+<span class="output">The authenticity of host '192.168.1.100' can't be established.
+ED25519 key fingerprint is SHA256:aBcDeFgH1234...
+Are you sure you want to continue connecting (yes/no)? yes
+student@192.168.1.100's password:
+Linux raspberrypi 5.15.0 #1 SMP armv7l GNU/Linux
+student@raspberrypi:~$</span>
+      </div>
+      <p>In the grade-change lab, the workflow was: scan the network with Nmap to discover the Raspberry Pi → identify port 22 open (SSH) → connect with <code style="color:var(--green)">ssh student@&lt;ip&gt;</code> → once inside, navigate to student record files and demonstrate what a real attacker could access. This chain is exactly what penetration testing is designed to expose — before someone with bad intent finds it first.</p>
+    </div>
+
+    <div class="card">
+      <h3>// Why Port 22?</h3>
+      <p>Port 22 is the standard, well-known port for SSH. When Nmap shows port 22 as open on a host, it's a signal that SSH is running and accepting connections. A pentester will note this immediately — it means there's a remote access interface available. If credentials can be found or guessed, the entire machine is accessible. This is why default or weak SSH passwords represent a critical security risk.</p>
+    </div>
+  </div>
+
+  <footer>0xKNOWLEDGE &nbsp;|&nbsp; Ethical Hacking Reference</footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

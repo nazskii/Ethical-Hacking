@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>0xKnowledge | 01 — CLI</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">0xKNOWLEDGE</a>
+  <ul class="nav-links">
+    <li><a href="index.html">~/home</a></li>
+    <li><a href="cli.html">01_CLI</a></li>
+    <li><a href="ssh.html">02_SSH</a></li>
+    <li><a href="nmap.html">03_Nmap</a></li>
+    <li><a href="wireshark.html">04_Wireshark</a></li>
+    <li><a href="hydra.html">05_Hydra</a></li>
+    <li><a href="bruteforce.html">06_BruteForce</a></li>
+  </ul>
+</nav>
+
+<div class="page-wrap">
+  <div class="content-wrap">
+    <div class="section-tag">// 01 — TOOL</div>
+    <h1 class="section-title">CLI — Command-Line Interface</h1>
+
+    <div class="intro-block">
+      The Command-Line Interface is a text-based method of interacting with a computer's operating system by typing commands directly. Instead of clicking icons, you type instructions and receive text output in return. It's the foundation of nearly everything a security professional does.
+    </div>
+
+    <div class="card">
+      <h3>// CLI vs. GUI</h3>
+      <p>A Graphical User Interface (GUI) lets you interact with visual elements — windows, buttons, and menus. A CLI removes all of that and communicates directly with the OS through text. GUIs are easier for casual users, but GUI applications only expose the features developers decided to show. The CLI exposes <em>everything</em>. For a security tester, that total control matters.</p>
+    </div>
+
+    <div class="card">
+      <h3>// Why Security Professionals Live in the Terminal</h3>
+      <p>
+        <strong style="color:var(--green)">Speed:</strong> Experienced users execute complex operations in seconds that would take minutes clicking through menus.<br><br>
+        <strong style="color:var(--green)">Precision:</strong> Commands are exact. There's no ambiguity about what you're doing — unlike GUI apps that hide implementation details.<br><br>
+        <strong style="color:var(--green)">Scripting:</strong> CLI commands can be chained and automated. Repetitive tasks like scanning subnets or parsing output are only practical from the terminal.<br><br>
+        <strong style="color:var(--green)">Remote Access:</strong> SSH sessions are terminal-only. When connected to a remote machine, there's often no GUI at all.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>// Real Lab Commands</h3>
+      <div class="code-block" data-label="BASH">
+<span class="comment"># Navigate to the /etc directory — where system config files live</span>
+cd /etc
+
+<span class="comment"># List all files, including hidden ones, with detailed permissions</span>
+ls -la
+
+<span class="comment"># Sample output:</span>
+<span class="output">drwxr-xr-x  2 root root  4096 Jan 10 08:12 ssh
+-rw-r--r--  1 root root  3028 Jan 10 08:12 passwd
+-rw-------  1 root root  1420 Jan 10 08:12 shadow</span>
+
+<span class="comment"># /etc/passwd lists all users. /etc/shadow stores password hashes.</span>
+<span class="comment"># During a pentest, finding a readable shadow file is a critical finding.</span>
+      </div>
+      <p>The <code style="color:var(--green)">ls -la</code> flags break down as: <span style="color:#ff9900">-l</span> (long format — shows permissions, owner, size) and <span style="color:#ff9900">-a</span> (show all hidden files that begin with a dot). Understanding file permissions from the terminal tells a tester instantly whether sensitive files are exposed to the wrong users.</p>
+    </div>
+
+    <!-- FAKE TERMINAL BONUS -->
+    <div class="section-tag" style="margin-top:2.5rem">// BONUS — INTERACTIVE TERMINAL</div>
+    <p style="margin-bottom:1rem;color:var(--text-dim);font-size:0.9rem">
+      Type a command below to see simulated output. Try:
+      <code style="color:var(--green)">ls</code>,
+      <code style="color:var(--green)">whoami</code>,
+      <code style="color:var(--green)">pwd</code>,
+      <code style="color:var(--green)">ifconfig</code>,
+      <code style="color:var(--green)">history</code>,
+      <code style="color:var(--green)">help</code>
+    </p>
+    <div class="terminal-window">
+      <div class="terminal-bar">
+        <div class="t-dot red"></div>
+        <div class="t-dot yellow"></div>
+        <div class="t-dot green"></div>
+        <div class="terminal-title">kali@pentest:~$</div>
+      </div>
+      <div class="terminal-body" id="term-output">
+        <div><span class="prompt">kali@pentest:~$ </span><span style="opacity:0.4">_</span></div>
+      </div>
+      <div class="terminal-input-row">
+        <span>kali@pentest:~$</span>
+        <input id="term-input" type="text" autocomplete="off" spellcheck="false" placeholder="type a command and press Enter..."/>
+      </div>
+      <div class="term-hint">// Type 'help' for a list of available commands.</div>
+    </div>
+  </div>
+
+  <footer>0xKNOWLEDGE &nbsp;|&nbsp; Ethical Hacking Reference</footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
