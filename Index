@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>0xKnowledge | Ethical Hacking Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --black: #030508;
+  --midnight: #0d1b3e;
+  --midnight-mid: #112260;
+  --midnight-light: #1a3080;
+  --green: #39ff14;
+  --green-dim: #1db80a;
+  --green-dark: #0a5a04;
+  --green-glow: rgba(57,255,20,0.18);
+  --green-glow2: rgba(57,255,20,0.07);
+  --text: #cce8c0;
+  --text-dim: #7aab6b;
+  --border: rgba(57,255,20,0.22);
+  --card-bg: rgba(13,27,62,0.7);
+  --font-mono: 'Share Tech Mono', monospace;
+  --font-display: 'Orbitron', sans-serif;
+  --font-body: 'Exo 2', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ───── GRID BG ───── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(57,255,20,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(57,255,20,0.035) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ───── SCANLINE OVERLAY ───── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.07) 2px,
+    rgba(0,0,0,0.07) 4px
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ───── NAVBAR ───── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  background: rgba(3,5,8,0.92);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 58px;
+}
+.nav-brand {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.1rem;
+  color: var(--green);
+  text-shadow: 0 0 14px var(--green);
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+.nav-links {
+  display: flex;
+  gap: 0.1rem;
+  list-style: none;
+  flex-wrap: wrap;
+}
+.nav-links a {
+  color: var(--text-dim);
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 0.73rem;
+  letter-spacing: 1px;
+  padding: 6px 10px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  transition: all 0.2s;
+}
+.nav-links a:hover, .nav-links a.active {
+  color: var(--green);
+  border-color: var(--border);
+  background: var(--green-glow2);
+  text-shadow: 0 0 8px var(--green);
+}
+
+/* ───── PAGES ───── */
+.page { display: none; min-height: 100vh; padding-top: 58px; position: relative; z-index: 1; }
+.page.active { display: block; }
+
+/* ───── HERO ───── */
+.hero {
+  min-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  position: relative;
+}
+.hero-glitch {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 6vw, 4.5rem);
+  font-weight: 900;
+  color: var(--green);
+  text-shadow: 0 0 30px var(--green), 0 0 60px rgba(57,255,20,0.4);
+  letter-spacing: 4px;
+  position: relative;
+  animation: flicker 6s infinite;
+}
+@keyframes flicker {
+  0%,97%,100% { opacity: 1; }
+  98% { opacity: 0.6; }
+  99% { opacity: 1; }
+  99.5% { opacity: 0.7; }
+}
+.hero-sub {
+  font-family: var(--font-mono);
+  color: var(--green-dim);
+  font-size: 1rem;
+  margin-top: 0.5rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+#typewriter-text {
+  font-family: var(--font-mono);
+  font-size: clamp(0.85rem, 2vw, 1.05rem);
+  color: var(--text);
+  max-width: 700px;
+  margin: 2.5rem auto 0;
+  min-height: 80px;
+  text-align: left;
+  background: rgba(13,27,62,0.5);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.2rem 1.5rem;
+}
+#typewriter-text::after {
+  content: '█';
+  color: var(--green);
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+.hero-cards {
+  display: flex;
+  gap: 1.2rem;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.hero-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.2rem 1.8rem;
+  min-width: 160px;
+  cursor: pointer;
+  transition: all 0.25s;
+  text-align: center;
+}
+.hero-card:hover {
+  background: rgba(57,255,20,0.06);
+  border-color: var(--green);
+  box-shadow: 0 0 20px var(--green-glow);
+  transform: translateY(-3px);
+}
+.hero-card .card-num {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--green);
+  font-weight: 700;
+}
+.hero-card .card-label {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  margin-top: 4px;
+}
+
+/* ───── CONTENT SECTIONS ───── */
+.content-wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 3rem 2rem 5rem;
+}
+.section-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--green-dim);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 700;
+  color: var(--green);
+  text-shadow: 0 0 20px rgba(57,255,20,0.35);
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1rem;
+}
+.intro-block {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--green);
+  border-radius: 0 8px 8px 0;
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  font-size: 1.05rem;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  transition: border-color 0.2s;
+}
+.card:hover { border-color: rgba(57,255,20,0.45); }
+.card h3 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--green);
+  margin-bottom: 0.8rem;
+  letter-spacing: 1px;
+}
+.card p { color: var(--text); line-height: 1.75; }
+
+/* ───── CODE BLOCKS ───── */
+.code-block {
+  background: #020408;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.2rem 1.5rem;
+  margin: 1.5rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: var(--green);
+  overflow-x: auto;
+  position: relative;
+}
+.code-block .comment { color: #4a7a42; }
+.code-block .flag { color: #ff9900; }
+.code-block .output { color: #a0d4f5; }
+.code-block .found { color: #ff4444; font-weight: bold; }
+.code-block::before {
+  content: attr(data-label);
+  position: absolute;
+  top: -1px; right: 14px;
+  background: var(--midnight-mid);
+  color: var(--text-dim);
+  font-size: 0.65rem;
+  letter-spacing: 2px;
+  padding: 2px 10px;
+  border-radius: 0 0 4px 4px;
+  border: 1px solid var(--border);
+  border-top: none;
+}
+
+/* ───── ETHICS BLOCK ───── */
+.ethics-block {
+  background: rgba(255,40,40,0.06);
+  border: 1px solid rgba(255,60,60,0.3);
+  border-left: 3px solid #ff3c3c;
+  border-radius: 0 8px 8px 0;
+  padding: 1.4rem 1.8rem;
+  margin: 2rem 0;
+}
+.ethics-block h3 {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  color: #ff5555;
+  letter-spacing: 2px;
+  margin-bottom: 0.7rem;
+}
+.ethics-block p, .ethics-block li { color: #e8b0b0; margin-bottom: 0.4rem; }
+
+/* ───── DEFENSE BLOCK ───── */
+.defense-block {
+  background: rgba(0,80,200,0.08);
+  border: 1px solid rgba(57,255,20,0.2);
+  border-left: 3px solid #4da6ff;
+  border-radius: 0 8px 8px 0;
+  padding: 1.4rem 1.8rem;
+  margin: 2rem 0;
+}
+.defense-block h3 {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  color: #4da6ff;
+  letter-spacing: 2px;
+  margin-bottom: 0.7rem;
+}
+.defense-block li { color: var(--text); margin-bottom: 0.5rem; margin-left: 1.2rem; }
+
+/* ───── FAKE TERMINAL ───── */
+.terminal-window {
+  background: #010204;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 2rem 0;
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(57,255,20,0.08);
+}
+.terminal-bar {
+  background: #0d1b3e;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+}
+.t-dot { width: 11px; height: 11px; border-radius: 50%; }
+.t-dot.red { background: #ff5f57; }
+.t-dot.yellow { background: #febc2e; }
+.t-dot.green { background: #28c840; }
+.terminal-title {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  margin-left: 6px;
+  letter-spacing: 1px;
+}
+.terminal-body {
+  padding: 1.2rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  min-height: 160px;
+  max-height: 340px;
+  overflow-y: auto;
+}
+.terminal-body .prompt { color: var(--green); }
+.terminal-body .t-out { color: #a0d4f5; }
+.terminal-body .t-err { color: #ff5555; }
+.terminal-input-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 1.5rem 1rem;
+}
+.terminal-input-row span { color: var(--green); font-family: var(--font-mono); font-size: 0.85rem; }
+#term-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--green);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  flex: 1;
+  caret-color: var(--green);
+}
+.term-hint {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  padding: 0 1.5rem 0.5rem;
+}
+
+/* ───── COMMAND BUILDER ───── */
+.builder-wrap {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin: 2rem 0;
+}
+.builder-wrap h3 {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  color: var(--green);
+  letter-spacing: 2px;
+  margin-bottom: 1.2rem;
+}
+.builder-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-bottom: 1rem;
+}
+.builder-row label {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+.builder-row input[type=checkbox] { accent-color: var(--green); cursor: pointer; width: 15px; height: 15px; }
+.builder-input {
+  background: #010408;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--green);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  padding: 5px 10px;
+  width: 170px;
+}
+.builder-input:focus { outline: none; border-color: var(--green); }
+.builder-output {
+  background: #010204;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem 1.2rem;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: var(--green);
+  margin-top: 1rem;
+  min-height: 50px;
+  word-break: break-all;
+}
+.builder-explain {
+  margin-top: 0.8rem;
+  font-size: 0.83rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+.explain-flag { color: #ff9900; }
+
+/* ───── QUIZ ───── */
+.quiz-wrap {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin: 2rem 0;
+}
+.quiz-wrap h3 {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  color: var(--green);
+  letter-spacing: 2px;
+  margin-bottom: 1.2rem;
+}
+.quiz-q {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+.quiz-options { display: flex; flex-direction: column; gap: 0.55rem; margin-bottom: 1rem; }
+.quiz-opt {
+  background: #010408;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.65rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.18s;
+  text-align: left;
+}
+.quiz-opt:hover { border-color: var(--green); color: var(--green); background: var(--green-glow2); }
+.quiz-opt.correct { background: rgba(57,255,20,0.1); border-color: var(--green); color: var(--green); }
+.quiz-opt.wrong { background: rgba(255,60,60,0.1); border-color: #ff4444; color: #ff6666; }
+.quiz-feedback {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  min-height: 1.2em;
+  margin-bottom: 0.8rem;
+}
+.quiz-progress {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  text-align: right;
+}
+.quiz-score {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--green);
+  text-align: center;
+  margin-top: 0.5rem;
+  text-shadow: 0 0 12px var(--green);
+}
+.btn {
+  background: transparent;
+  border: 1px solid var(--green);
+  color: var(--green);
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  padding: 8px 18px;
+  border-radius: 4px;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: all 0.2s;
+  margin-top: 0.8rem;
+}
+.btn:hover { background: var(--green-glow); box-shadow: 0 0 14px var(--green-glow); }
+
+/* ───── PACKET TABLE ───── */
+.packet-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  margin: 1.2rem 0;
+}
+.packet-table th {
+  background: var(--midnight-mid);
+  color: var(--green);
+  padding: 8px 12px;
+  text-align: left;
+  border: 1px solid var(--border);
+  letter-spacing: 1px;
+}
+.packet-table td {
+  padding: 7px 12px;
+  border: 1px solid rgba(57,255,20,0.1);
+  color: var(--text);
+}
+.packet-table tr:hover td { background: var(--green-glow2); }
+.packet-table .sensitive { color: #ff6666; font-weight: bold; }
+
+/* ───── FOOTER ───── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 2rem;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  position: relative; z-index: 1;
+}
+
+/* ───── SCROLLBAR ───── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--midnight-light); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--green-dark); }
+
+/* ───── RESPONSIVE ───── */
+@media(max-width:640px){
+  .nav-links { gap: 0; }
+  .nav-links a { font-size: 0.65rem; padding: 5px 6px; }
+  .content-wrap { padding: 2rem 1rem 4rem; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-brand" onclick="showPage('home')">0xKNOWLEDGE</div>
+  <ul class="nav-links">
+    <li><a href="#" onclick="showPage('home')" id="nav-home">~/home</a></li>
+    <li><a href="#" onclick="showPage('cli')" id="nav-cli">01_CLI</a></li>
+    <li><a href="#" onclick="showPage('ssh')" id="nav-ssh">02_SSH</a></li>
+    <li><a href="#" onclick="showPage('nmap')" id="nav-nmap">03_Nmap</a></li>
+    <li><a href="#" onclick="showPage('wireshark')" id="nav-wireshark">04_Wireshark</a></li>
+    <li><a href="#" onclick="showPage('hydra')" id="nav-hydra">05_Hydra</a></li>
+    <li><a href="#" onclick="showPage('bruteforce')" id="nav-bruteforce">06_BruteForce</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════ PAGE: HOME ══════════════════ -->
+<div class="page active" id="page-home">
+  <section class="hero">
+    <div class="hero-glitch">0xKNOWLEDGE</div>
+    <div class="hero-sub">Ethical Hacking Reference Repository</div>
+    <div id="typewriter-text"></div>
+    <div class="hero-cards">
+      <div class="hero-card" onclick="showPage('cli')"><div class="card-num">01</div><div class="card-label">CLI</div></div>
+      <div class="hero-card" onclick="showPage('ssh')"><div class="card-num">02</div><div class="card-label">SSH</div></div>
+      <div class="hero-card" onclick="showPage('nmap')"><div class="card-num">03</div><div class="card-label">Nmap</div></div>
+      <div class="hero-card" onclick="showPage('wireshark')"><div class="card-num">04</div><div class="card-label">Wireshark</div></div>
+      <div class="hero-card" onclick="showPage('hydra')"><div class="card-num">05</div><div class="card-label">Hydra</div></div>
+      <div class="hero-card" onclick="showPage('bruteforce')"><div class="card-num">06</div><div class="card-label">Brute-Force</div></div>
+    </div>
+  </section>
+
+  <div class="content-wrap">
+    <div class="section-tag">// 00 — FOUNDATION</div>
+    <h1 class="section-title">What Is Ethical Hacking?</h1>
+
+    <div class="intro-block">
+      Ethical hacking is the authorized practice of intentionally probing computer systems, networks, and applications for security weaknesses — before a malicious actor can find and exploit them. An ethical hacker uses the same techniques and tools as any other attacker. The single thing that sets them apart is <strong style="color:var(--green)">permission</strong>.
+    </div>
+
+    <div class="card">
+      <h3>// Permission Is Everything</h3>
+      <p>Illegal hacking and ethical hacking are technically identical. Same tools. Same methods. Same vulnerabilities. The difference is a signed authorization document. Without written permission from the system owner, probing a network is a federal crime under the Computer Fraud and Abuse Act (CFAA). With it, the exact same action is a professional service. Intent matters — but intent without authorization is not a legal defense.</p>
+    </div>
+
+    <div class="card">
+      <h3>// Why Organizations Hire Ethical Hackers</h3>
+      <p>Organizations cannot defend against attacks they haven't tested for. Ethical hackers — also called penetration testers or "pentesters" — are hired to think like attackers and find weaknesses in a controlled way. They deliver findings in a report that includes the vulnerabilities discovered, the risk they represent, and concrete recommendations to fix them. The goal is always to improve the organization's security posture before a real attacker gets the chance.</p>
+    </div>
+
+    <div class="card">
+      <h3>// The Hacker Mindset</h3>
+      <p>Real security comes from thinking adversarially. Ethical hackers ask: "How would someone break this?" They probe assumptions, test edge cases, and look for misconfigurations that slip past normal audits. Their value isn't just in technical skill — it's in bringing an outsider's creative curiosity to find what defenders have become blind to.</p>
+    </div>
+
+    <!-- QUIZ BONUS FEATURE -->
+    <div class="section-tag" style="margin-top:3rem">// BONUS — SELF-CHECK QUIZ</div>
+    <h2 class="section-title" style="font-size:1.4rem">Knowledge Quiz</h2>
+    <div class="quiz-wrap" id="quiz-container"></div>
+  </div>
+  <footer>0xKNOWLEDGE &nbsp;|&nbsp; Ethical Hacking Reference &nbsp;|&nbsp; Built with HTML / CSS / JS</footer>
+</div>
+
+<!-- ══════════════════ PAGE: CLI ══════════════════ -->
+<div class="page" id="page-cli">
+  <div class="content-wrap">
+    <div class="section-tag">// 01 — TOOL</div>
+    <h1 class="section-title">CLI — Command-Line Interface</h1>
+
+    <div class="intro-block">
+      The Command-Line Interface is a text-based method of interacting with a computer's operating system by typing commands. Instead of clicking icons, you type instructions directly and receive text output in return. It's the foundation of nearly everything a security professional does.
+    </div>
+
+    <div class="card">
+      <h3>// CLI vs GUI</h3>
+      <p>A Graphical User Interface (GUI) lets you interact with visual elements — windows, buttons, and menus. A CLI removes all of that and communicates directly with the OS kernel through text. GUIs are easier for casual users but GUI applications only expose the features developers decided to show. The CLI exposes <em>everything</em>. For a security tester, that total control matters.</p>
+    </div>
+
+    <div class="card">
+      <h3>// Why Security Professionals Live in the Terminal</h3>
+      <p><strong style="color:var(--green)">Speed:</strong> Experienced users execute complex operations in seconds that would take minutes clicking through menus.<br><br>
+      <strong style="color:var(--green)">Precision:</strong> Commands are exact. There's no ambiguity about what you're doing — unlike GUI apps that hide implementation details.<br><br>
+      <strong style="color:var(--green)">Scripting:</strong> CLI commands can be chained and scripted. Automating repetitive tasks (scanning a subnet, parsing output) is only practical from the terminal.<br><br>
+      <strong style="color:var(--green)">Remote Access:</strong> SSH sessions are terminal-only. When you're connected to a remote machine, there's often no GUI at all.</p>
+    </div>
+
+    <div class="card">
+      <h3>// Real Lab Commands</h3>
+      <div class="code-block" data-label="BASH">
+<span class="comment"># Navigate to the /etc directory — where system config files live</span>
+cd /etc
+
+<span class="comment"># List all files, including hidden ones, with permissions</span>
+ls -la
+
+<span class="comment"># Sample output:</span>
+<span class="output">drwxr-xr-x  2 root root  4096 Jan 10 08:12 ssh
+-rw-r--r--  1 root root  3028 Jan 10 08:12 passwd
+-rw-------  1 root root  1420 Jan 10 08:12 shadow</span>
+
+<span class="comment"># /etc/passwd lists all users. /etc/shadow stores password hashes.</span>
+<span class="comment"># During a pentest, finding readable shadow files is a critical finding.</span>
+      </div>
+      <p>The <code style="color:var(--green)">ls -la</code> flags break down as: <span style="color:#ff9900">-l</span> (long format showing permissions, owner, size) and <span style="color:#ff9900">-a</span> (show hidden files beginning with a dot). Understanding file permissions directly in the terminal tells a tester whether sensitive files are exposed.</p>
+    </div>
+
+    <!-- FAKE TERMINAL BONUS -->
+    <div class="section-tag" style="margin-top:2.5rem">// BONUS — INTERACTIVE TERMINAL</div>
+    <p style="margin-bottom:1rem;color:var(--text-dim);font-size:0.9rem">Type a command below to see simulated output. Try: <code style="color:var(--green)">ls</code>, <code style="color:var(--green)">whoami</code>, <code style="color:var(--green)">pwd</code>, <code style="color:var(--green)">ifconfig</code>, <code style="color:var(--green)">help</code></p>
+    <div class="terminal-window">
+      <div class="terminal-bar">
+        <div class="t-dot red"></div><div class="t-dot yellow"></div><div class="t-dot green"></div>
+        <div class="terminal-title">kali@pentest:~$</div>
+      </div>
+      <div class="terminal-body" id="term-output">
+        <div><span class="prompt">kali@pentest:~$ </span><span>_</span></div>
+      </div>
+      <div class="terminal-input-row">
+        <span>kali@pentest:~$</span>
+        <input id="term-input" type="text" autocomplete="off" spellcheck="false" placeholder="type a command..."/>
+      </div>
+      <div class="term-hint">// Press Enter to run. Type 'help' for command list.</div>
+    </div>
+  </div>
+  <footer>0xKNOWLEDGE &nbsp;|&nbsp; Ethical Hacking Reference</footer>
+</div>
+
+<!-- ══════════════════ PAGE: SSH ══════════════════ -->
+<div class="page" id="page-ssh">
+  <div class="content-wrap">
+    <div class="section-tag">// 02 — TOOL</div>
+    <h1 class="section-title">SSH — Secure Shell</h1>
+
+    <div class="intro-block">
+      SSH (Secure Shell) is a cryptographic network protocol that lets you operate a remote computer's command line over an encrypted connection — as if you were sitting in front of it. Before SSH, tools like Telnet sent all traffic, including passwords, in plain text across the network. Anyone with a packet sniffer could read it. SSH eliminated that problem entirely.
+    </div>
+
+    <div class="card">
+      <h3>// The Problem SSH Solved</h3>
+      <p>In the early days of networking, administrators used Telnet to remotely manage systems. Telnet worked, but it had a fatal flaw: it transmitted everything — commands, responses, and credentials — as unencrypted plain text. SSH replaced it with an encrypted tunnel using public-key cryptography, making interception of the connection useless. The attacker might capture the traffic, but what they'd see would be cipher gibberish.</p>
+    </div>
+
+    <div class="card">
+      <h3>// What You Can Do Over SSH</h3>
+      <p>Once connected, you have full shell access to the remote machine. In a penetration testing context this means: running reconnaissance commands, reading files and logs, checking for privilege escalation paths, installing or removing software, pivoting to other machines on the internal network, and executing anything you'd do if you were physically present — quietly and from anywhere in the world.</p>
+    </div>
+
+    <div class="card">
+      <h3>// Command Breakdown — Lab Example</h3>
+      <div class="code-block" data-label="TERMINAL">
+<span class="comment"># Connect to the Raspberry Pi found during the Nmap lab</span>
+ssh student@192.168.1.100
+
+<span class="comment"># Breaking down each part:</span>
+<span class="flag">ssh</span>           <span class="comment">→ the SSH client program</span>
+<span class="flag">student</span>       <span class="comment">→ the username to log in as on the remote machine</span>
+<span class="flag">@</span>             <span class="comment">→ separator between username and host</span>
+<span class="flag">192.168.1.100</span> <span class="comment">→ the IP address of the target (found via Nmap)</span>
+
+<span class="output">The authenticity of host '192.168.1.100' can't be established.
+ED25519 key fingerprint is SHA256:xyz...
+Are you sure you want to continue connecting (yes/no)? yes
+student@192.168.1.100's password:
+Linux raspberrypi 5.15.0 #1 SMP armv7l GNU/Linux
+student@raspberrypi:~$</span>
+      </div>
+      <p>In the grade-change lab, the workflow was: scan the network with Nmap to discover the Raspberry Pi → identify port 22 open (SSH) → connect with <code style="color:var(--green)">ssh student@&lt;ip&gt;</code> → once inside, navigate to student records and demonstrate what a real attacker could do. This is the chain that penetration testing exposes.</p>
+    </div>
+  </div>
+  <footer>0xKNOWLEDGE &nbsp;|&nbsp; Ethical Hacking Reference</footer>
+</div>
+
+<!-- ══════════════════ PAGE: NMAP ══════════════════ -->
+<div class="page" id="page-nmap">
+  <div class="content-wrap">
+    <div class="section-tag">// 03 — TOOL</div>
+    <h1 class="section-title">Nmap — Network Mapper</h1>
+
+    <div class="intro-block">
+      Nmap is an open-source tool for network discovery and security auditing. It sends carefully crafted packets to hosts on a network and analyzes the responses to determine which systems are online, which ports are open, and what services — and versions of those services — are running on them.
+    </div>
+
+    <div class="card">
+      <h3>// What Are Ports?</h3>
+      <p>A port is a numbered endpoint on a networked computer — think of it like a slot on the side of a building where specific kinds of traffic enter and exit. Port 22 is conventionally used for SSH. Port 80 for HTTP web traffic. Port 443 for HTTPS. Port 3306 for MySQL databases. When a service is "running on a port," it means it's actively listening for connections on that number. To a security tester, an open port is a potential entry point. Knowing what's open — and what version is running — is the starting point for almost every test.</p>
+    </div>
+
+    <div class="card">
+      <h3>// Nmap Command — With Real Output</h3>
+      <div class="code-block" data-label="NMAP SCAN">
+<span class="comment"># Scan an entire subnet and detect service versions</span>
+nmap -sV 192.168.1.0/24
+
+<span class="flag">-sV</span>          <span class="comment">→ version detection — identifies what software is on each open port</span>
+<span class="flag">192.168.1.0/24</span> <span class="comment">→ scan all 254 hosts on this subnet (CIDR notation)</span>
+
+<span class="comment"># Sample output:</span>
+<span class="output">Nmap scan report for 192.168.1.100
+PORT     STATE  SERVICE  VERSION
+22/tcp   open   ssh      OpenSSH 7.9
+80/tcp   open   http     Apache httpd 2.4.38
+3306/tcp open   mysql    MySQL 5.7.36
+8080/tcp open   http-alt Werkzeug httpd 1.0.1</span>
+
+<span class="comment"># Port 3306 open = a database directly exposed on the local network.</span>
+<span class="comment"># Port 8080 running Werkzeug = likely a development server (not hardened).</span>
+<span class="comment"># Both are findings worth documenting in a pentest report.</span>
+      </div>
+    </div>
+
+    <!-- NMAP COMMAND BUILDER BONUS -->
+    <div class="section-tag" style="margin-top:2.5rem">// BONUS — NMAP COMMAND BUILDER</div>
+    <div class="builder-wrap" id="nmap-builder"></div>
+  </div>
+  <footer>0xKNOWLEDGE &nbsp;|&nbsp; Ethical Hacking Reference</footer>
+</div>
+
+<!-- ══════════════════ PAGE: WIRESHARK ══════════════════ -->
+<div class="page" id="page-wireshark">
+  <div class="content-wrap">
+    <div class="section-tag">// 04 — TOOL</div>
+    <h1 class="section-title">Wireshark — Packet Analyzer</h1>
+
+    <div class="intro-block">
+      Wireshark is a free, open-source network protocol analyzer that captures and lets you inspect every packet traveling across a network interface in real time. It's one of the most widely used tools in both security research and network troubleshooting.
+    </div>
+
+    <div class="card">
+      <h3>// What Is a Packet?</h3>
+      <p>Think of a packet like a physical letter traveling through the postal system. The letter has an envelope with a "from" address (source IP) and a "to" address (destination IP), and inside the envelope is the actual content — the payload. Network communication works the same way: data is broken into small chunks called packets, each with header information describing where it's going and where it came from, plus the actual data being transmitted. Wireshark lets you open every envelope and read every letter passing through your network interface.</p>
+    </div>
+
+    <div class="card">
+      <h3>// What Wireshark Reveals</h3>
+      <p>Wireshark doesn't use command-line syntax the way Nmap does — it's a GUI application that displays a live feed of packets. During a security test, Wireshark can expose: unencrypted credentials in HTTP login forms, DNS queries revealing internal hostnames, ARP traffic mapping the network's physical-to-IP address table, and any data transmitted in plain text over the network. The key insight is that anything unencrypted is readable to anyone watching the traffic.</p>
+    </div>
+
+    <div class="card">
+      <h3>// Real-World Example: HTTP Login Capture</h3>
+      <p>Imagine a user on the same network submits a login form to a site running HTTP (not HTTPS). Wireshark captures that traffic and reveals the raw POST request, including the username and password in plain text. Below is what that captured exchange looks like:</p>
+      <table class="packet-table">
+        <thead>
+          <tr><th>#</th><th>Source</th><th>Destination</th><th>Protocol</th><th>Info</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>192.168.1.55</td><td>203.0.113.10</td><td>TCP</td><td>SYN → port 80</td></tr>
+          <tr><td>2</td><td>203.0.113.10</td><td>192.168.1.55</td><td>TCP</td><td>SYN-ACK</td></tr>
+          <tr><td>3</td><td>192.168.1.55</td><td>203.0.113.10</td><td>HTTP</td><td>POST /login.php HTTP/1.1</td></tr>
+          <tr><td></td><td colspan="4" class="sensitive">Payload: username=admin&password=hunter2 [PLAIN TEXT — VISIBLE]</td></tr>
+          <tr><td>4</td><td>203.0.113.10</td><td>192.168.1.55</td><td>HTTP</td><td>HTTP/1.1 302 Found → redirect to /dashboard</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:1rem">In a real test, this finding would be reported as: <em>"Credentials transmitted over unencrypted HTTP. Intercepted via passive network capture. Remediation: enforce HTTPS site-wide using TLS 1.2 or higher."</em></p>
+    </div>
+
+    <div class="ethics-block">
+      <h3>⚠ LEGAL BOUNDARY</h3>
+      <p>Capturing network traffic you don't own or don't have authorization to monitor is illegal under the Electronic Communications Privacy Act (ECPA). Wireshark is a legitimate diagnostic and security tool — on networks where you have permission. Passive sniffing on a network without consent is federal wire-tapping.</p>
+    </div>
+  </div>
+  <footer>0xKNOWLEDGE &nbsp;|&nbsp; Ethical Hacking Reference</footer>
+</div>
+
+<!-- ══════════════════ PAGE: HYDRA ══════════════════ -->
+<div class="page" id="page-hydra">
+  <div class="content-wrap">
+    <div class="section-tag">// 05 — TOOL</div>
+    <h1 class="section-title">Hydra — Credential Testing Tool</h1>
+
+    <div class="intro-block">
+      THC-Hydra is a fast, parallelized login-cracking tool used by authorized security testers to verify whether systems accept weak or commonly used passwords. It automates the process of submitting credential combinations against login interfaces — including SSH, FTP, HTTP forms, and many others.
+    </div>
+
+    <div class="card">
+      <h3>// What Hydra Does and Why Testers Use It</h3>
+      <p>When an organization asks a pentester to assess their authentication systems, one critical question is: "Do any accounts use weak or default passwords?" Manually trying thousands of passwords is not feasible. Hydra automates this by taking a list of passwords and rapidly submitting them against a login service. If any password in the list succeeds, Hydra reports it. A security tester uses this to confirm the vulnerability, then documents it in a report so the organization can reset the credential and improve their password policy.</p>
+    </div>
+
+    <div class="card">
+      <h3>// What Is a Wordlist?</h3>
+      <p>A wordlist is simply a text file containing one password per line — typically compiled from data breaches, research into common password patterns, and keyboard walks. The most well-known wordlist is <code style="color:var(--green)">rockyou.txt</code>, which contains over 14 million real passwords leaked from a 2009 data breach. Hydra reads through the wordlist sequentially, submitting each password against the target service until one works or the list is exhausted.</p>
+    </div>
+
+    <div class="card">
+      <h3>// Lab Command — Full Flag Breakdown</h3>
+      <div class="code-block" data-label="HYDRA">
+<span class="comment"># Authorized credential test against SSH service on 192.168.1.50</span>
+hydra -l admin -P /usr/share/wordlists/rockyou.txt ssh://192.168.1.50
+
+<span class="flag">hydra</span>             <span class="comment">→ the program being called</span>
+<span class="flag">-l admin</span>         <span class="comment">→ lowercase -l: a single, specific username to test</span>
+<span class="flag">-P rockyou.txt</span>  <span class="comment">→ uppercase -P: a file path to the password wordlist</span>
+<span class="flag">ssh://</span>           <span class="comment">→ the protocol to attack (Hydra supports dozens)</span>
+<span class="flag">192.168.1.50</span>    <span class="comment">→ the IP address of the target SSH service</span>
+
+<span class="comment"># Output when a credential is found:</span>
+<span class="found">[22][ssh] host: 192.168.1.50   login: admin   password: password1</span>
+
+<span class="comment"># Finding: Account 'admin' uses the password 'password1'.</span>
+<span class="comment"># Action: Report it. Recommend forced reset and MFA enforcement.</span>
+      </div>
+    </div>
+
+    <div class="ethics-block">
+      <h3>⚠ ETHICS — REQUIRED READING</h3>
+      <p><strong>Running Hydra against any system without written authorization is illegal.</strong> It doesn't matter if the system appears to be abandoned, misconfigured, or "obviously vulnerable." Unauthorized credential testing violates the Computer Fraud and Abuse Act (CFAA) — a federal statute with penalties including prison time and significant fines. The authorization document signed before a penetration test is what separates a security professional from a criminal using the exact same tool.</p>
+    </div>
+
+    <div class="defense-block">
+      <h3>// DEFENSES AGAINST CREDENTIAL ATTACKS</h3>
+      <ul>
+        <li><strong>Account Lockout Policies:</strong> Automatically lock an account after a set number of failed attempts (e.g., 5). This forces an attacker to slow down dramatically or abandon the attack entirely.</li>
+        <li><strong>Rate Limiting:</strong> Limit how many login attempts can come from a single IP per minute. Hydra's speed is its strength — rate limiting removes that advantage.</li>
+        <li><strong>Multi-Factor Authentication (MFA):</strong> Even if Hydra finds the correct password, MFA means the attacker still can't log in without a second factor (a phone code, hardware key, etc.). This is the most impactful defense.</li>
+      </ul>
+    </div>
+  </div>
+  <footer>0xKNOWLEDGE &nbsp;|&nbsp; Ethical Hacking Reference</footer>
+</div>
+
+<!-- ══════════════════ PAGE: BRUTE FORCE ══════════════════ -->
+<div class="page" id="page-bruteforce">
+  <div class="content-wrap">
+    <div class="section-tag">// 06 — CONCEPT</div>
+    <h1 class="section-title">Brute-Force Attacks</h1>
+
+    <div class="intro-block">
+      Brute-force is an attack <em>method</em>, not a single tool. It describes the strategy of systematically trying every possible combination of credentials, characters, or keys until the correct one is found. It's the computational equivalent of trying every key on a keyring, one by one, until a door opens.
+    </div>
+
+    <div class="card">
+      <h3>// Brute-Force vs. Dictionary Attack</h3>
+      <p><strong style="color:var(--green)">Brute-Force Attack:</strong> Tries every possible combination in a defined character set — every letter, number, and symbol in every possible order. If the password space is small enough, this will eventually succeed. The downside is time: an 8-character password with mixed case and symbols has over 200 trillion combinations. Even modern hardware can take years.</p>
+      <p style="margin-top:0.8rem"><strong style="color:var(--green)">Dictionary Attack:</strong> Works smarter. Instead of every possible combination, it uses a pre-built wordlist of known passwords, common words, leaked credentials, and predictable patterns. Most real users pick passwords that appear in wordlists, making dictionary attacks far faster and more practical in real engagements. Hydra's <code style="color:var(--green)">rockyou.txt</code> attack is a dictionary attack.</p>
+    </div>
+
+    <div class="card">
+      <h3>// Penetration Test Scenario</h3>
+      <p>During an authorized test, a tester identifies an SSH service on a server with no account lockout policy. They run Hydra with the rockyou.txt wordlist against the <code style="color:var(--green)">admin</code> account. Within minutes, Hydra returns a valid credential. The tester logs in, documents the access level achieved, and photographs proof. The final report reads:</p>
+      <div class="code-block" data-label="PENTEST FINDING">
+<span class="comment">FINDING: Weak Credentials + No Lockout Policy</span>
+<span class="output">Severity:    Critical
+Service:     SSH (Port 22)
+Host:        192.168.1.50
+Credential:  admin / password1
+Method:      Dictionary attack (rockyou.txt) — succeeded in 4 minutes</span>
+
+<span class="comment">RISK: Full unauthorized shell access to production server.</span>
+<span class="comment">RECOMMENDATION:</span>
+<span class="output">1. Immediately reset the 'admin' credential.
+2. Enforce a minimum 12-character passphrase policy.
+3. Implement account lockout after 5 failed attempts.
+4. Require MFA for all SSH access.
+5. Disable password auth entirely — enforce SSH key pairs.</span>
+      </div>
+    </div>
+
+    <div class="ethics-block">
+      <h3>⚠ ETHICS — THREE DEFENSES EXPLAINED</h3>
+      <p><strong>1. Account Lockout:</strong> After a defined number of failed logins, the account is disabled for a period or until unlocked by an admin. This turns a dictionary attack from a 4-minute exercise into an infeasible multi-year project.</p>
+      <p style="margin-top:0.6rem"><strong>2. Rate Limiting:</strong> Systems can detect abnormally high login request rates and throttle or block them. A human trying passwords manually might make 5 attempts per minute. Hydra can make thousands. Rate limiting detects and kills that pattern.</p>
+      <p style="margin-top:0.6rem"><strong>3. Multi-Factor Authentication (MFA):</strong> Even a perfectly cracked password becomes worthless if the system also requires a one-time code from an authenticator app or hardware token. MFA makes stolen or guessed passwords essentially useless on their own.</p>
+    </div>
+
+    <!-- HYDRA COMMAND BUILDER BONUS -->
+    <div class="section-tag" style="margin-top:2.5rem">// BONUS — HYDRA COMMAND BUILDER</div>
+    <div class="builder-wrap" id="hydra-builder"></div>
+  </div>
+  <footer>0xKNOWLEDGE &nbsp;|&nbsp; Ethical Hacking Reference</footer>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════
+   PAGE ROUTING
+═══════════════════════════════════════════ */
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  const page = document.getElementById('page-' + name);
+  if (page) {
+    page.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+  const navLink = document.getElementById('nav-' + name);
+  if (navLink) navLink.classList.add('active');
+}
+
+/* ═══════════════════════════════════════════
+   TYPEWRITER ANIMATION (HOMEPAGE HERO)
+═══════════════════════════════════════════ */
+const typeTarget = document.getElementById('typewriter-text');
+const typeText = 'ethical_hacking.exe → Authorization is the only line between a penetration tester and a criminal. Same tools. Same techniques. Different permission. This repository documents the tools, concepts, and ethics of authorized security testing.';
+let ti = 0;
+function type() {
+  if (ti < typeText.length) {
+    typeTarget.textContent = typeText.slice(0, ++ti);
+    setTimeout(type, ti < 30 ? 60 : 28);
+  }
+}
+type();
+
+/* ═══════════════════════════════════════════
+   FAKE TERMINAL
+═══════════════════════════════════════════ */
+const termOutput = document.getElementById('term-output');
+const termInput = document.getElementById('term-input');
+const termCommands = {
+  'help': () => `<span class="t-out">Available commands: ls, pwd, whoami, ifconfig, uname, ps, history, clear, nmap, ssh, cat /etc/passwd</span>`,
+  'ls': () => `<span class="t-out">Desktop  Documents  Downloads  tools  wordlists  reports  .ssh</span>`,
+  'pwd': () => `<span class="t-out">/home/kali</span>`,
+  'whoami': () => `<span class="t-out">kali</span>`,
+  'ifconfig': () => `<span class="t-out">eth0: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500
+        inet 192.168.1.42  netmask 255.255.255.0  broadcast 192.168.1.255
+        ether 08:00:27:ab:cd:ef
+lo:   flags=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0</span>`,
+  'uname': () => `<span class="t-out">Linux kali 6.1.0-kali9-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.27-1kali1 x86_64 GNU/Linux</span>`,
+  'ps': () => `<span class="t-out">PID   TTY      TIME     CMD
+  1    pts/0    00:00:00 bash
+ 42    pts/0    00:00:00 ps</span>`,
+  'history': () => `<span class="t-out">  1  nmap -sV 192.168.1.0/24
+  2  ssh student@192.168.1.100
+  3  hydra -l admin -P /usr/share/wordlists/rockyou.txt ssh://192.168.1.50
+  4  wireshark &amp;
+  5  cat /etc/passwd</span>`,
+  'nmap': () => `<span class="t-out">Starting Nmap 7.94 ( https://nmap.org )
+Nmap scan report for 192.168.1.100
+PORT     STATE  SERVICE  VERSION
+22/tcp   open   ssh      OpenSSH 7.9p1
+80/tcp   open   http     Apache httpd 2.4.38
+3306/tcp open   mysql    MySQL 5.7.36
+Nmap done: 1 IP address (1 host up) scanned in 3.42 seconds</span>`,
+  'ssh': () => `<span class="t-out">usage: ssh [-l login_name] [-p port] destination
+Try: ssh student@192.168.1.100</span>`,
+  'ssh student@192.168.1.100': () => `<span class="t-out">The authenticity of host '192.168.1.100' can't be established.
+ED25519 key fingerprint is SHA256:k3y...
+Are you sure you want to continue? (yes/no) yes
+student@192.168.1.100's password:
+Linux raspberrypi 5.15.0 armv7l GNU/Linux
+student@raspberrypi:~$</span>`,
+  'cat /etc/passwd': () => `<span class="t-out">root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+student:x:1001:1001::/home/student:/bin/bash
+admin:x:1002:1002::/home/admin:/bin/bash</span>`,
+  'clear': () => { termOutput.innerHTML = ''; return null; },
+};
+
+termInput.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  const cmd = termInput.value.trim().toLowerCase();
+  termInput.value = '';
+  const prompt = `<div><span class="prompt">kali@pentest:~$ </span>${escapeHtml(cmd)}</div>`;
+  const handler = termCommands[cmd];
+  let result;
+  if (handler) {
+    result = handler();
+  } else if (cmd === '') {
+    result = null;
+  } else {
+    result = `<span class="t-err">bash: ${escapeHtml(cmd)}: command not found. Type 'help' for commands.</span>`;
+  }
+  if (result !== null) {
+    termOutput.innerHTML += prompt + `<div>${result}</div>`;
+    termOutput.scrollTop = termOutput.scrollHeight;
+  }
+});
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ═══════════════════════════════════════════
+   NMAP COMMAND BUILDER
+═══════════════════════════════════════════ */
+function buildNmapBuilder() {
+  const el = document.getElementById('nmap-builder');
+  if (!el) return;
+  el.innerHTML = `
+    <h3>// NMAP COMMAND BUILDER</h3>
+    <p style="font-size:0.85rem;color:var(--text-dim);margin-bottom:1.2rem">Select options to build and explain an Nmap command in real time.</p>
+    <div class="builder-row">
+      <label><input type="checkbox" id="nmap-sV"> <span class="explain-flag">-sV</span> Version detection</label>
+      <label><input type="checkbox" id="nmap-sS"> <span class="explain-flag">-sS</span> SYN scan (stealth)</label>
+      <label><input type="checkbox" id="nmap-O"> <span class="explain-flag">-O</span> OS detection</label>
+      <label><input type="checkbox" id="nmap-A"> <span class="explain-flag">-A</span> Aggressive scan</label>
+      <label><input type="checkbox" id="nmap-p"> <span class="explain-flag">-p</span> Specific ports:</label>
+      <input class="builder-input" id="nmap-ports" placeholder="22,80,443" style="width:130px"/>
+    </div>
+    <div class="builder-row">
+      <span style="font-family:var(--font-mono);font-size:0.8rem;color:var(--text-dim)">Target IP / Range:</span>
+      <input class="builder-input" id="nmap-target" value="192.168.1.0/24" style="width:200px"/>
+    </div>
+    <div class="builder-output" id="nmap-output"></div>
+    <div class="builder-explain" id="nmap-explain"></div>
+  `;
+  ['nmap-sV','nmap-sS','nmap-O','nmap-A','nmap-p','nmap-ports','nmap-target'].forEach(id => {
+    document.getElementById(id).addEventListener('input', updateNmap);
+    document.getElementById(id).addEventListener('change', updateNmap);
+  });
+  updateNmap();
+}
+function updateNmap() {
+  const sV = document.getElementById('nmap-sV').checked;
+  const sS = document.getElementById('nmap-sS').checked;
+  const O = document.getElementById('nmap-O').checked;
+  const A = document.getElementById('nmap-A').checked;
+  const useP = document.getElementById('nmap-p').checked;
+  const ports = document.getElementById('nmap-ports').value || '22,80,443';
+  const target = document.getElementById('nmap-target').value || '192.168.1.0/24';
+  let flags = [];
+  let explains = [];
+  if (sS) { flags.push('-sS'); explains.push('<span class="explain-flag">-sS</span>: SYN scan — sends a SYN packet and records the response without completing the TCP handshake. Stealthy and fast.'); }
+  if (sV) { flags.push('-sV'); explains.push('<span class="explain-flag">-sV</span>: Version detection — after finding an open port, probes to identify the exact software and version.'); }
+  if (O) { flags.push('-O'); explains.push('<span class="explain-flag">-O</span>: OS detection — analyzes response patterns to guess the target\'s operating system.'); }
+  if (A) { flags.push('-A'); explains.push('<span class="explain-flag">-A</span>: Aggressive — enables OS detection, version detection, script scanning, and traceroute. Noisy but comprehensive.'); }
+  if (useP) { flags.push(`-p ${ports}`); explains.push(`<span class="explain-flag">-p ${ports}</span>: Only scan these specific ports instead of all 65535.`); }
+  const cmd = `nmap ${flags.join(' ')} ${target}`.trim();
+  document.getElementById('nmap-output').textContent = cmd;
+  document.getElementById('nmap-explain').innerHTML = explains.length ? explains.join('<br>') : '<span style="color:var(--text-dim)">Select flags above to see explanations.</span>';
+}
+
+/* ═══════════════════════════════════════════
+   HYDRA COMMAND BUILDER
+═══════════════════════════════════════════ */
+function buildHydraBuilder() {
+  const el = document.getElementById('hydra-builder');
+  if (!el) return;
+  el.innerHTML = `
+    <h3>// HYDRA COMMAND BUILDER</h3>
+    <p style="font-size:0.85rem;color:var(--text-dim);margin-bottom:1.2rem">Build a Hydra command and understand what each flag does.</p>
+    <div class="builder-row">
+      <span style="font-family:var(--font-mono);font-size:0.8rem;color:var(--text-dim)">Protocol:</span>
+      <select id="hy-proto" style="background:#010408;border:1px solid var(--border);color:var(--green);font-family:var(--font-mono);font-size:0.8rem;padding:5px 10px;border-radius:4px">
+        <option>ssh</option><option>ftp</option><option>http-post-form</option><option>rdp</option>
+      </select>
+      <span style="font-family:var(--font-mono);font-size:0.8rem;color:var(--text-dim)">Target IP:</span>
+      <input class="builder-input" id="hy-ip" value="192.168.1.50" style="width:160px"/>
+    </div>
+    <div class="builder-row">
+      <label><input type="radio" name="hy-user" id="hy-single" checked> Single user: </label>
+      <input class="builder-input" id="hy-username" value="admin" style="width:120px"/>
+      <label><input type="radio" name="hy-user" id="hy-list"> User list: </label>
+      <input class="builder-input" id="hy-userfile" value="/usr/share/wordlists/users.txt" style="width:250px"/>
+    </div>
+    <div class="builder-row">
+      <label><input type="checkbox" id="hy-v"> <span class="explain-flag">-v</span> Verbose output</label>
+      <label><input type="checkbox" id="hy-t"> <span class="explain-flag">-t</span> Threads:</label>
+      <input class="builder-input" id="hy-threads" value="4" style="width:60px"/>
+    </div>
+    <div class="builder-output" id="hy-output"></div>
+    <div class="builder-explain" id="hy-explain"></div>
+  `;
+  ['hy-proto','hy-ip','hy-single','hy-list','hy-username','hy-userfile','hy-v','hy-t','hy-threads'].forEach(id => {
+    const el2 = document.getElementById(id);
+    if (el2) { el2.addEventListener('input', updateHydra); el2.addEventListener('change', updateHydra); }
+  });
+  updateHydra();
+}
+function updateHydra() {
+  const proto = document.getElementById('hy-proto').value;
+  const ip = document.getElementById('hy-ip').value || '192.168.1.50';
+  const single = document.getElementById('hy-single').checked;
+  const username = document.getElementById('hy-username').value || 'admin';
+  const userfile = document.getElementById('hy-userfile').value;
+  const v = document.getElementById('hy-v').checked;
+  const useT = document.getElementById('hy-t').checked;
+  const threads = document.getElementById('hy-threads').value || '4';
+  const userFlag = single ? `-l ${username}` : `-L ${userfile}`;
+  const userFlagLabel = single ? `-l` : `-L`;
+  const userFlagVal = single ? username : userfile;
+  let flags = [userFlag, '-P /usr/share/wordlists/rockyou.txt'];
+  let explains = [
+    `<span class="explain-flag">${userFlagLabel} ${userFlagVal}</span>: ${single ? 'Single username to test (lowercase -l).' : 'File containing a list of usernames to try (uppercase -L).'}`,
+    `<span class="explain-flag">-P rockyou.txt</span>: Uppercase -P specifies a wordlist file of passwords to try.`
+  ];
+  if (v) { flags.push('-v'); explains.push('<span class="explain-flag">-v</span>: Verbose — shows each attempt in real time (slower but informative during testing).'); }
+  if (useT) { flags.splice(2,0,`-t ${threads}`); explains.push(`<span class="explain-flag">-t ${threads}</span>: Number of parallel connection threads. More threads = faster, but noisier and riskier of triggering detection.`); }
+  const cmd = `hydra ${flags.join(' ')} ${proto}://${ip}`;
+  document.getElementById('hy-output').textContent = cmd;
+  document.getElementById('hy-explain').innerHTML = explains.join('<br>');
+}
+
+/* ═══════════════════════════════════════════
+   QUIZ
+═══════════════════════════════════════════ */
+const quizData = [
+  {
+    q: "What is the single most important difference between ethical hacking and illegal hacking?",
+    opts: ["The tools used are different","The hacker has written authorization","The attacker is less skilled","Ethical hackers only look, never touch"],
+    correct: 1,
+    exp: "Correct. Same tools, same methods — authorization is the only legal and ethical distinction."
+  },
+  {
+    q: "What does the Nmap flag -sV do?",
+    opts: ["Scans all 65535 ports","Detects operating systems","Identifies service versions on open ports","Runs a stealth SYN scan"],
+    correct: 2,
+    exp: "Correct. -sV probes open ports to identify the software and version running on each."
+  },
+  {
+    q: "What is the difference between a brute-force attack and a dictionary attack?",
+    opts: [
+      "Brute-force uses wordlists; dictionary tries every character combination",
+      "They are identical — just different names",
+      "Brute-force tries every possible combination; dictionary attack uses a wordlist of known passwords",
+      "Dictionary attacks only work on web forms"
+    ],
+    correct: 2,
+    exp: "Correct. Brute-force is exhaustive (all combinations). Dictionary attacks use curated wordlists, making them faster in practice."
+  },
+  {
+    q: "What could Wireshark reveal if a user logs into a site over plain HTTP?",
+    opts: [
+      "Nothing — all traffic is encrypted",
+      "Only the URL visited, not the credentials",
+      "The username and password in plain text inside the captured packet",
+      "The server's SSL certificate"
+    ],
+    correct: 2,
+    exp: "Correct. HTTP does not encrypt traffic. Login form data (username, password) is visible in the packet payload."
+  },
+  {
+    q: "Which defense MOST effectively stops a successful Hydra attack even if the password is guessed correctly?",
+    opts: ["Strong firewall rules","Account lockout after 5 attempts","Multi-Factor Authentication (MFA)","Using port 2222 instead of 22 for SSH"],
+    correct: 2,
+    exp: "Correct. MFA means a correct password alone is insufficient — a second factor (phone code, hardware key) is still required."
+  },
+  {
+    q: "What made Telnet insecure compared to SSH?",
+    opts: [
+      "Telnet used weaker encryption than SSH",
+      "Telnet transmitted all data — including passwords — as unencrypted plain text",
+      "Telnet was slower",
+      "Telnet required root access to run"
+    ],
+    correct: 1,
+    exp: "Correct. Telnet sent everything in plain text. SSH replaced it with encrypted, authenticated sessions."
+  },
+];
+
+let qIndex = 0, qScore = 0, qAnswered = false;
+function buildQuiz() {
+  const c = document.getElementById('quiz-container');
+  if (!c) return;
+  if (qIndex >= quizData.length) {
+    c.innerHTML = `
+      <div class="quiz-score">SCORE: ${qScore} / ${quizData.length}</div>
+      <p style="text-align:center;margin-top:1rem;color:var(--text-dim);font-family:var(--font-mono)">
+        ${qScore === quizData.length ? '// PERFECT — All correct. You are cleared for deployment.' :
+          qScore >= 4 ? '// SOLID — Minor gaps. Review missed questions.' :
+          '// REVIEW NEEDED — Revisit the tool pages before submitting.'}
+      </p>
+      <div style="text-align:center"><button class="btn" onclick="resetQuiz()">// RESTART QUIZ</button></div>
+    `;
+    return;
+  }
+  const q = quizData[qIndex];
+  c.innerHTML = `
+    <div class="quiz-progress">QUESTION ${qIndex+1} OF ${quizData.length} &nbsp;|&nbsp; SCORE: ${qScore}</div>
+    <div class="quiz-q" style="margin-top:1rem">${q.q}</div>
+    <div class="quiz-options">${q.opts.map((o,i)=>`<button class="quiz-opt" onclick="answerQuiz(${i})">${o}</button>`).join('')}</div>
+    <div class="quiz-feedback" id="quiz-fb"></div>
+    <button class="btn" id="quiz-next" style="display:none" onclick="nextQuestion()">// NEXT QUESTION →</button>
+  `;
+  qAnswered = false;
+}
+function answerQuiz(idx) {
+  if (qAnswered) return;
+  qAnswered = true;
+  const q = quizData[qIndex];
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts[idx].classList.add(idx === q.correct ? 'correct' : 'wrong');
+  if (idx !== q.correct) opts[q.correct].classList.add('correct');
+  if (idx === q.correct) qScore++;
+  document.getElementById('quiz-fb').innerHTML = `<span style="color:${idx===q.correct?'var(--green)':'#ff6666'}">${idx===q.correct?'✓ ':' ✗ '}${q.exp}</span>`;
+  document.getElementById('quiz-next').style.display = 'inline-block';
+}
+function nextQuestion() { qIndex++; buildQuiz(); }
+function resetQuiz() { qIndex = 0; qScore = 0; buildQuiz(); }
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  buildQuiz();
+  buildNmapBuilder();
+  buildHydraBuilder();
+  // Rebuild builders when pages load
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => {
+      setTimeout(() => { buildNmapBuilder(); buildHydraBuilder(); }, 10);
+    });
+  });
+});
+</script>
+</body>
+</html>
